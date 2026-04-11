@@ -1,24 +1,26 @@
+import React, { useState, useRef } from 'react';
 const PRIMARY_IMAGE =
-  'https://res.cloudinary.com/di4caiech/image/upload/v1775814753/_DSC4372_1_cy6epq.jpg'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889876/_DSC4361_wpyqbd.jpg'
 const HOVER_IMAGE =
-  'https://res.cloudinary.com/di4caiech/image/upload/v1775814753/_DSC4372_1_cy6epq.jpg'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889876/_DSC4361_wpyqbd.jpg'
 const HOVER_IMAGE_Laggam =
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816009/8B_1_oydhw5.png'
 const HOVER_IMAGE_Balagam =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816005/GRID_1_actr9k.png'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889254/DSC04686_riko6a.jpg'
 const HOVER_IMAGE_Chilakamma =
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816005/_DSC4935_1_x1o35v.png'
 const HOVER_IMAGE_Anantham =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816002/Grid_16_svnycf.png'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889876/_DSC4543_usj70y.jpg'
 
 const PRIMARY_IMAGE_Laggam =
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816009/8B_1_oydhw5.png'
+  
 const PRIMARY_IMAGE_Balagam =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816005/GRID_1_actr9k.png'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889254/DSC04686_riko6a.jpg'
 const PRIMARY_IMAGE_Chilakamma =
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816005/_DSC4935_1_x1o35v.png'
 const PRIMARY_IMAGE_Anantham =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775816002/Grid_16_svnycf.png'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889876/_DSC4543_usj70y.jpg'
 
 const collections = [
   {
@@ -63,53 +65,86 @@ const collections = [
   },
 ]
 
+const ZoomImage = ({ src, alt }) => {
+  const [showZoom, setShowZoom] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+    const x = ((e.pageX - left - window.scrollX) / width) * 100;
+    const y = ((e.pageY - top - window.scrollY) / height) * 100;
+    setZoomPos({ x, y });
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className="relative aspect-3/4 overflow-hidden bg-[#f4f1ea] cursor-crosshair"
+      onMouseEnter={() => setShowZoom(true)}
+      onMouseLeave={() => setShowZoom(false)}
+      onMouseMove={handleMouseMove}
+    >
+      {/* Base Image */}
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover transition-opacity duration-300"
+        loading="lazy"
+      />
+
+      {/* Zoom Overlay (Amazon Style) */}
+      {showZoom && (
+        <div 
+          className="absolute inset-0 z-30 pointer-events-none border-2 border-brand/20"
+          style={{
+            backgroundImage: `url(${src})`,
+            backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+            backgroundSize: '250%', // Magnification level
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      )}
+      
+      {/* Subtle branding hint when not zooming */}
+      {!showZoom && (
+        <div className="absolute bottom-4 right-4 text-[0.5rem] uppercase tracking-widest text-brand/40 lg:block hidden">
+          Hover to inspect weave
+        </div>
+      )}
+    </div>
+  );
+};
+
 const CollectionsSection = () => {
   return (
-    <section id="collections" className="bg-background py-12 lg:py-12">
+    <section id="collections" className="bg-background py-12 lg:py-24">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-[5%]">
+        {/* Header Section */}
         <div className="mb-4 flex flex-col items-start justify-between gap-8 border-b border-brand/10 pb-10 sm:mb-14 sm:gap-10 sm:pb-12 lg:mb-2 lg:flex-row lg:items-end lg:gap-10 lg:pb-16">
           <div className="relative max-w-2xl">
             <div className="absolute -left-6 top-0 hidden h-full w-px bg-brand/20 lg:block" />
-
             <span className="mb-4 block font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand/80 sm:mb-6">
               The Five Collections
             </span>
-
             <h2 className="font-['EB_Garamond'] text-4xl font-extralight leading-[1.1] text-foreground sm:text-6xl lg:text-7xl">
               Sarees for every <br />
               <span className="text-brand">woman, every moment</span>
             </h2>
           </div>
-
-          
-            
         </div>
 
+        {/* Collections Grid */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-5 lg:gap-8 xl:gap-6">
           {collections.map((item) => (
             <article
               key={item.id}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-brand/10 bg-background shadow-[0_8px_32px_rgba(47,38,19,0.07)] transition-all duration-500 max-lg:active:scale-[0.99] lg:rounded-none lg:border-0 lg:bg-transparent lg:shadow-none"
+              className="group flex flex-col overflow-hidden lg:overflow-visible transition-all duration-500"
             >
-              <div className="relative aspect-3/4 overflow-hidden bg-[#f4f1ea]">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out lg:group-hover:scale-[1.08]"
-                  loading="lazy"
-                />
+              {/* Image with Custom Zoom Component */}
+              <ZoomImage src={item.image} alt={item.title} />
 
-                <img
-                  src={item.hoverImage}
-                  alt={`${item.title} details`}
-                  className="absolute inset-0 hidden h-full w-full object-cover opacity-0 transition-all duration-700 ease-in-out lg:block lg:group-hover:opacity-100 lg:group-hover:scale-[1.08]"
-                  loading="lazy"
-                />
-
-                <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 lg:group-hover:bg-black/5" />
-              </div>
-
-              <div className="flex flex-1 flex-col px-5 pb-6 pt-4 sm:px-4 sm:pb-5 sm:pt-3 lg:px-0 lg:pb-0 lg:pt-2">
+              <div className="flex flex-1 flex-col px-5 pb-6 pt-4 sm:px-4 sm:pb-5 sm:pt-3 lg:px-0 lg:pb-0 lg:pt-6">
                 <div className="mb-2 flex items-center gap-3">
                   <span className="font-['EB_Garamond'] text-xs italic text-brand/40">{item.id}</span>
                   <div className="h-px flex-1 bg-brand/10 transition-colors lg:group-hover:bg-brand/40" />
@@ -119,11 +154,11 @@ const CollectionsSection = () => {
                   {item.title}
                 </h3>
 
-                <p className="mb-3 font-['EB_Garamond'] text-sm italic text-brand/70 sm:mb-4">
+                <p className="mb-3 font-['EB_Garamond'] text-sm italic text-brand/70">
                   {item.subtitle}
                 </p>
 
-                <p className="font-['Montserrat'] text-[0.85rem] leading-[1.65] text-foreground/60 line-clamp-5 transition-colors sm:text-[0.8rem] sm:leading-[1.6] lg:line-clamp-3 lg:group-hover:text-foreground/90">
+                <p className="font-['Montserrat'] text-[0.8rem] leading-[1.6] text-foreground/60 line-clamp-3 transition-colors lg:group-hover:text-foreground/90">
                   {item.desc}
                 </p>
               </div>
@@ -132,7 +167,7 @@ const CollectionsSection = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default CollectionsSection
+export default CollectionsSection;

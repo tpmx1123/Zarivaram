@@ -4,15 +4,15 @@ const BoutiqueSpotlight = () => {
   const productImg = "https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775811759/_DSC5190_copy_1_mrdxrh.png";
 
   return (
-    <section className="bg-[#fffdf9] py-12 lg:py-24 border-t border-brand/10">
+    <section className=" py-12 lg:py-22 border-t border-brand/10">
       <div className="mx-auto max-w-[1440px] px-[6%] lg:px-[10%]">
         
         {/* 1. Section Header - Always on top */}
-        <div className="mb-10 text-center">
-          <span className="font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand/60">
+        <div className="mb-16 text-center">
+          <span className="mb-4 block font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand/80 sm:mb-6">
             From the Boutique
           </span>
-          <h2 className="mt-2 font-['EB_Garamond'] text-4xl font-light text-foreground lg:text-6xl">
+          <h2 className="font-['EB_Garamond'] text-4xl font-extralight leading-[1.1] text-foreground sm:text-6xl lg:text-7xl">
             The Kanakadhara <br />
             <span className="text-brand">Kanchipuram Silk</span>
           </h2>
@@ -34,48 +34,45 @@ const BoutiqueSpotlight = () => {
                 className="h-full w-full object-cover transition-transform duration-1000 hover:scale-105"
               />
               
-              {/* Subtle Mobile Tag */}
-              <div className="absolute bottom-4 right-4 bg-white/80 px-3 py-1 backdrop-blur-sm rounded lg:hidden">
-                <p className="font-['Montserrat'] text-[0.5rem] font-bold uppercase tracking-widest text-brand">
-                  Signature Edition
-                </p>
-              </div>
+              
             </div>
           </div>
 
           {/* TEXT CONTENT - Mobile: Order 2 | Desktop: Order 2 */}
-          <div className="order-2 flex flex-col space-y-8">
+          <div className="order-2 flex flex-col space-y-2  ">
             
             {/* Table-style Specs */}
             <div className="divide-y divide-brand/10 font-['Montserrat']">
-              {[
-                { label: "Collection", value: "Gouramma Collection" },
-                { label: "Palette", value: "Crimson · Gold · Ivory" },
-                { label: "For", value: "Mother of the Bride" },
-                { label: "Weave", value: "Pure Mulberry Silk" },
-                { label: "Craft time", value: "18 days · 2 weavers" }
-              ].map((spec, index) => (
-                <div key={index} className="flex justify-between py-4 group cursor-default">
-                  <span className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-brand/50 group-hover:text-brand transition-colors">
-                    {spec.label}
-                  </span>
-                  <span className="text-[0.75rem] font-medium text-foreground/80 lg:text-[0.85rem]">
-                    {spec.value}
-                  </span>
-                </div>
-              ))}
-            </div>
+  {[
+    { label: "Collection", value: "Gouramma Collection" },
+    { label: "Palette", value: "Crimson · Gold · Ivory" },
+    { label: "For", value: "Mother of the Bride" },
+    { label: "Weave", value: "Pure Mulberry Silk" },
+    { label: "Craft time", value: "18 days · 2 weavers" }
+  ].map((spec, index) => (
+    /* Changed justify-between to a grid layout */
+    <div key={index} className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] py-4 group cursor-default gap-40">
+      <span className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-brand/80 group-hover:text-brand transition-colors">
+        {spec.label}
+      </span>
+      {/* value is now naturally left-aligned next to the label */}
+      <span className="text-[0.75rem] font-medium text-foreground/80 lg:text-[0.85rem] text-left">
+        {spec.value}
+      </span>
+    </div>
+  ))}
+</div>
 
             {/* Devotional Quote */}
             <div className="relative">
               <span className="absolute -left-4 top-0 text-3xl text-brand/10 font-serif italic">“</span>
-              <p className="font-['EB_Garamond'] text-lg lg:text-xl leading-relaxed text-foreground/90 italic pl-2">
+              <p className="font-['EB_Garamond'] text-lg lg:text-xl leading-relaxed text-foreground/90  pl-2">
                 &quot;Held by 12 families this season — each a different name, the same devotion.&quot;
               </p>
             </div>
 
             {/* ACTION BUTTONS - 2 Columns on Mobile */}
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-6 pt-4">
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-6 ">
               <button className="bg-brand px-4 py-4 lg:px-10 lg:py-5 font-['Montserrat'] text-[0.6rem] lg:text-[0.7rem] font-bold uppercase tracking-[0.15em] lg:tracking-[0.2em] text-white transition-all hover:bg-foreground rounded-lg shadow-lg shadow-brand/10">
                 Acquire <span className="hidden sm:inline">Piece</span>
               </button>

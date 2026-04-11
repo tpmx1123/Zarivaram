@@ -44,7 +44,7 @@ const HeroSection = () => {
   }, [goNext])
 
   return (
-    <section className="relative w-full overflow-hidden bg-black" aria-label="Hero imagery">
+    <section className="relative w-full overflow-hidden bg-black/10" aria-label="Hero imagery">
       {/* Mobile: single banner image only */}
       <div className="relative aspect-21/9 w-full max-h-[42vh] min-h-[140px] sm:max-h-[46vh] lg:hidden">
         <img

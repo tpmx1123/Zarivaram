@@ -16,7 +16,7 @@ const StorySection = () => {
             {/* 1. Subtitle (Mobile Order 1) */}
             <div className="mb-5 flex items-center gap-4 order-1">
               
-              <span className="font-['Montserrat'] text-[0.65rem] font-bold uppercase tracking-[0.3em] text-brand">
+              <span className="mb-4 block font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand/80 sm:mb-6">
                 Founder & Curator
               </span>
             </div>
