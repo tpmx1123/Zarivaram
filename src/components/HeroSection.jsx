@@ -2,9 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 
 const SLIDES = [
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775825710/Frame_1984078959_1_svjosp.jpg',
-  'https://res.cloudinary.com/di4caiech/image/upload/v1775821159/Frame_1984078959_k8itw4.jpg',
-  'https://res.cloudinary.com/di4caiech/image/upload/v1775814753/_DSC4372_1_cy6epq.jpg',
-  'https://res.cloudinary.com/di4caiech/image/upload/v1775814963/_DSC5190_copy_1_1_tmk4bw.png',
 ]
 
 const INTERVAL_MS = 5500
@@ -60,7 +57,7 @@ const HeroSection = () => {
       </div>
 
       {/* Desktop: image carousel only */}
-      <div className="relative hidden min-h-[420px] h-[78vh] max-h-[900px] w-full lg:block">
+      <div className="relative hidden min-h-[520px] h-[78vh] max-h-[900px] w-full lg:block">
         {SLIDES.map((src, i) => (
           <img
             key={src}
