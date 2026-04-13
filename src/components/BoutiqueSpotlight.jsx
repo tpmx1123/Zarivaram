@@ -14,7 +14,7 @@ const BoutiqueSpotlight = () => {
           </span>
           <h2 className="font-['EB_Garamond'] text-4xl font-extralight leading-[1.1] text-foreground sm:text-6xl lg:text-7xl">
             The Kanakadhara <br />
-            <span className="text-brand">Kanchipuram Silk</span>
+            <span className="text-brand italic">Kanchipuram Silk</span>
           </h2>
         </div>
 

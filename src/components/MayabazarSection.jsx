@@ -1,115 +1,294 @@
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+
+const EVENT_IMAGES = [
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775814753/_DSC4372_1_cy6epq.jpg',
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775814963/_DSC5190_copy_1_1_tmk4bw.png',
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889254/DSC04686_riko6a.jpg',
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889876/_DSC4543_usj70y.jpg',
+]
+
+const events = [
+  {
+    id: '01',
+    date: 'April 2026 · Hyderabad',
+    title: 'Mayabazar — Spring Edition',
+    tag: 'Pop-up show',
+    desc: 'The seasonal showcase of new arrivals across all five collections. Meet the weavers. Touch the silk. Take your time.',
+    image: EVENT_IMAGES[0],
+  },
+  {
+    id: '02',
+    date: 'April 2026 · Boutique',
+    title: "Weaver's Weekend",
+    tag: 'Heritage · Craft',
+    desc: 'Two Kanchipuram master weavers in residence at Zarivaram. Watch a live demonstration. Understand what your saree carries.',
+    image: EVENT_IMAGES[1],
+  },
+  {
+    id: '03',
+    date: 'May 2026 · Hyderabad',
+    title: "Bride's Private Viewing",
+    tag: 'By appointment',
+    desc: 'A curated, closed viewing for brides and their families. Three hours, the right sarees, one-on-one with Abhilasha.',
+    image: EVENT_IMAGES[2],
+  },
+  {
+    id: '04',
+    date: 'Ongoing',
+    title: 'Draping Workshops',
+    tag: 'Workshop',
+    desc: 'Learn to drape for comfort, not just for show. Abhilasha’s original workshops — now held monthly at the boutique.',
+    image: EVENT_IMAGES[3],
+  },
+]
+
+function cardFocusOpacity(index, progress) {
+  const focus = progress * (events.length - 1)
+  const d = Math.abs(focus - index)
+  return Math.max(0.2, 1 - d * 0.75)
+}
+
+function cardFocusScale(index, progress) {
+  const focus = progress * (events.length - 1)
+  const d = Math.abs(focus - index)
+  return Math.max(0.94, 1 - d * 0.06)
+}
+
 const MayabazarSection = () => {
-    const events = [
-      {
-        date: "April 2026 · Hyderabad",
-        title: "Mayabazar — Spring Edition",
-        tag: "POP-UP SHOW",
-        desc: "The seasonal showcase of new arrivals across all five collections. Meet the weavers. Touch the silk. Take your time.",
-      },
-      {
-        date: "April 2026 · Boutique",
-        title: "Weaver's Weekend",
-        tag: "HERITAGE · CRAFT",
-        desc: "Two Kanchipuram master weavers in residence at Zarivaram. Watch a live demonstration. Understand what your saree carries.",
-      },
-      {
-        date: "May 2026 · Hyderabad",
-        title: "Bride's Private Viewing",
-        tag: "BY APPOINTMENT",
-        desc: "A curated, closed viewing for brides and their families. Three hours, the right sarees, one-on-one with Abhilasha.",
-      },
-      {
-        date: "Ongoing",
-        title: "Draping Workshops",
-        tag: "WORKSHOP",
-        desc: "Learn to drape for comfort, not just for show. Abhilasha's original workshops — now held monthly at the boutique.",
-      }
-    ];
-  
-    return (
-      <section id="mayabazar" className="relative bg-[#fffdf9] py-24 lg:py-32 overflow-hidden">
-        
-        {/* 1. Large Editorial Watermark */}
-        <div className="absolute top-20 left-[-5%] hidden origin-left -rotate-90 font-['EB_Garamond'] text-[12rem] italic text-brand/5 lg:block select-none pointer-events-none">
-          Mayabazar
-        </div>
-  
-        <div className="mx-auto max-w-[1440px] px-[6%] lg:px-[10%] relative z-10">
-          
-          {/* 2. Section Header - Asymmetric Alignment */}
-          <div className="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
-            <div>
-              <span className="mb-6 block font-['Montserrat'] text-[0.65rem] font-bold uppercase tracking-[0.5em] text-brand/60">
-                Monthly Events & Gatherings
-              </span>
-              <h2 className="font-['EB_Garamond'] text-5xl font-extralight leading-[1.1] text-foreground sm:text-6xl lg:text-7xl">
-                Mayabazar — <br />
-                <span className="italic text-brand">the pop-up show</span>
-              </h2>
-            </div>
-            <div className="lg:pb-2">
-              <p className="max-w-md font-['Montserrat'] text-[0.85rem] leading-[1.8] text-foreground/60">
-                Every month, Zarivaram opens its doors wide. We invite you to experience 
-                sarees not just as garments, but as conversations between weavers and wearers.
-              </p>
-            </div>
-          </div>
-  
-          {/* 3. Interactive Event Grid - Hairline Borders */}
-          <div className="grid grid-cols-1 md:grid-cols-2 border-t border-brand/20">
-            {events.map((event, index) => (
-              <div 
-                key={index} 
-                className={`group relative p-8 lg:p-14 transition-all duration-700 hover:bg-brand/[0.02] 
-                  ${index % 2 === 0 ? 'md:border-r border-b border-brand/10' : 'border-b border-brand/10'}`}
-              >
-                {/* Event Metadata */}
-                <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-                  <span className="font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand/60">
-                    {event.date}
+  const ghostRef = useRef(null)
+  const viewportRef = useRef(null)
+  const trackRef = useRef(null)
+  const [progress, setProgress] = useState(0)
+  const [maxTranslate, setMaxTranslate] = useState(0)
+  /** Extra width after the last card so scroll can end with card 04 centered. */
+  const [trailPad, setTrailPad] = useState(0)
+  const [reduceMotion, setReduceMotion] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+
+  const syncTrailPad = useCallback(() => {
+    const track = trackRef.current
+    const view = viewportRef.current
+    if (!track || !view) return
+    const vw = view.clientWidth
+    const cards = track.querySelectorAll('[data-maya-card]')
+    const last = cards[cards.length - 1]
+    if (!last) return
+    const desired = Math.max(0, last.offsetLeft + last.offsetWidth / 2 - vw / 2)
+    const range = Math.max(0, track.scrollWidth - vw)
+    const deficit = desired - range
+    setTrailPad((prev) => {
+      if (deficit > 2) return Math.max(prev, Math.ceil(deficit + 16))
+      if (deficit < -96) return 0
+      return prev
+    })
+  }, [])
+
+  const syncMaxTranslate = useCallback(() => {
+    const track = trackRef.current
+    const view = viewportRef.current
+    if (!track || !view) return
+    const vw = view.clientWidth
+    const cards = track.querySelectorAll('[data-maya-card]')
+    const last = cards[cards.length - 1]
+    if (!last) return
+    const desired = Math.max(0, last.offsetLeft + last.offsetWidth / 2 - vw / 2)
+    const range = Math.max(0, track.scrollWidth - vw)
+    setMaxTranslate(Math.min(desired, range))
+  }, [])
+
+  useLayoutEffect(() => {
+    syncTrailPad()
+    const ro = new ResizeObserver(() => syncTrailPad())
+    if (viewportRef.current) ro.observe(viewportRef.current)
+    if (trackRef.current) ro.observe(trackRef.current)
+    window.addEventListener('resize', syncTrailPad)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', syncTrailPad)
+    }
+  }, [syncTrailPad])
+
+  useLayoutEffect(() => {
+    syncMaxTranslate()
+  }, [trailPad, syncMaxTranslate])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onMq = () => setReduceMotion(mq.matches)
+    mq.addEventListener('change', onMq)
+    return () => mq.removeEventListener('change', onMq)
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = ghostRef.current
+      if (!el) return
+      const { top, height } = el.getBoundingClientRect()
+      const wh = window.innerHeight
+      const denom = height - wh
+      const p = denom > 0 ? Math.min(1, Math.max(0, -top / denom)) : 0
+      setProgress(p)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
+  const translatePx = maxTranslate > 0 ? Math.min(progress * maxTranslate, maxTranslate) : 0
+  const showScrollStage = !reduceMotion
+
+  return (
+    <section id="mayabazar" className="border-t border-brand/10 bg-background">
+      {showScrollStage ? (
+        <div ref={ghostRef} className="relative w-full" style={{ height: `${events.length * 100}vh` }}>
+          <div className="sticky top-0 flex h-dvh w-full max-h-screen flex-col overflow-x-clip overflow-y-visible bg-background">
+            <div className="shrink-0 border-b border-brand/10 px-4 pb-5 pt-8 max-lg:max-w-full sm:px-[6%] lg:px-[10%] lg:pb-6 lg:pt-14">
+              <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 max-lg:gap-5 lg:flex-row lg:items-end lg:gap-6">
+                <div className="max-w-3xl">
+                  <span className="mb-2 block font-['Montserrat'] text-[0.55rem] font-bold uppercase tracking-[0.45em] text-brand/80 max-lg:tracking-[0.35em] lg:mb-3 lg:text-[0.6rem] lg:tracking-[0.45em]">
+                    Monthly events & gatherings
                   </span>
-                  <span className="border border-brand/20 px-3 py-1 font-['Montserrat'] text-[0.5rem] font-bold uppercase tracking-widest text-brand/80 rounded-full group-hover:bg-brand group-hover:text-white transition-all duration-500">
-                    {event.tag}
-                  </span>
+                  <h2 className="font-['EB_Garamond'] text-[1.55rem] font-extralight leading-[1.12] text-foreground max-lg:max-w-[20ch] sm:text-3xl sm:max-lg:text-5xl lg:text-6xl">
+                    Mayabazar — <span className=" text-brand">the pop-up show</span>
+                  </h2>
                 </div>
-  
-                {/* Event Content */}
-                <div className="relative">
-                  <h3 className="mb-6 font-['EB_Garamond'] text-3xl lg:text-4xl font-normal text-foreground group-hover:text-brand transition-colors duration-500">
-                    {event.title}
-                  </h3>
-                  <p className="font-['Montserrat'] text-[0.85rem] leading-[1.8] text-foreground/60 max-w-sm">
-                    {event.desc}
+                <div className="hidden text-right lg:block">
+                  <div className="mb-2 ml-auto h-px w-24 bg-brand/20" />
+                  <p className="font-['EB_Garamond'] text-xs italic tracking-widest text-brand/60">
+                    Journal {new Date().getFullYear()}
                   </p>
                 </div>
-  
-                {/* Action Link - Subtle Reveal */}
-                <div className="mt-12 flex items-center gap-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <span className="font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand">
-                    Register Interest
-                  </span>
-                  <div className="h-px w-12 bg-brand/40"></div>
-                </div>
-  
-                {/* Background ID Watermark */}
-                <div className="absolute bottom-6 right-8 font-['EB_Garamond'] text-6xl italic text-brand/[0.03] select-none pointer-events-none group-hover:text-brand/[0.08] transition-all">
-                  0{index + 1}
-                </div>
               </div>
-            ))}
-          </div>
-  
-          {/* 4. Bottom Context Banner */}
-          <div className="mt-20 flex flex-col items-center text-center lg:mt-32">
-            <div className="h-px w-24 bg-brand/30 mb-8"></div>
-            <p className="font-['EB_Garamond'] text-xl italic text-foreground/40 max-w-lg">
-              &quot;A gathering for those who value the thread as much as the weave.&quot;
-            </p>
-            <div className="mt-10 font-serif text-brand opacity-40">✦</div>
+            </div>
+
+            <div
+              ref={viewportRef}
+              className="relative flex min-h-0 flex-1 flex-col overflow-x-clip overflow-y-visible pb-12 pt-1 max-sm:pb-14 sm:pb-10 lg:pb-16"
+            >
+              <div
+                ref={trackRef}
+                className="flex min-h-0 w-full flex-1 items-center gap-6 px-[5%] py-5 will-change-transform max-sm:gap-4 max-sm:px-3 max-sm:py-4 sm:gap-8 sm:px-[5%] sm:py-6 lg:items-stretch lg:gap-10 lg:px-[8%] lg:py-8"
+                style={{
+                  transform: `translate3d(-${translatePx}px, 0, 0)`,
+                }}
+              >
+                {events.map((event, index) => {
+                  const imageFirst = index % 2 === 0
+                  const o = cardFocusOpacity(index, progress)
+                  const s = cardFocusScale(index, progress)
+                  return (
+                    <article
+                      key={event.id}
+                      data-maya-card
+                      className="flex w-[min(88vw,900px)] shrink-0 origin-center overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-[0_12px_40px_rgba(47,38,19,0.07)] max-sm:rounded-xl sm:w-[min(92vw,900px)] max-lg:h-auto max-lg:max-h-[min(68dvh,500px)] max-lg:min-h-[min(38svh,280px)] lg:h-full lg:min-h-[min(52vh,400px)] lg:max-h-[min(62vh,480px)] lg:shadow-[0_16px_50px_rgba(47,38,19,0.08)]"
+                      style={{
+                        opacity: o,
+                        transform: `scale(${s})`,
+                      }}
+                    >
+                      <div
+                        className={`flex min-h-0 w-full flex-1 flex-col lg:flex-row lg:items-stretch ${
+                          imageFirst ? '' : 'lg:flex-row-reverse'
+                        }`}
+                      >
+                        <div className="relative aspect-16/10 w-full shrink-0 bg-[#f4f1ea] max-sm:aspect-3/2 lg:aspect-auto lg:h-full lg:min-h-0 lg:w-[46%]">
+                          <img
+                            src={event.image}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover"
+                            loading={index === 0 ? 'eager' : 'lazy'}
+                          />
+                          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent lg:bg-linear-to-r" />
+                        </div>
+
+                        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col justify-between p-4 max-sm:p-3.5 sm:p-6 lg:w-[54%] lg:py-7 lg:pl-7 lg:pr-7">
+                          <div>
+                            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 max-sm:mb-2 max-sm:gap-1.5 lg:mb-4">
+                              <div className="flex min-w-0 flex-1 items-center gap-2">
+                                <span className="font-['EB_Garamond'] text-base italic text-brand/40 max-sm:text-sm lg:text-lg">
+                                  {event.id}
+                                </span>
+                                <span className="h-px w-5 shrink-0 bg-brand/20 lg:w-6" />
+                                <span className="font-['Montserrat'] text-[0.5rem] font-bold uppercase tracking-[0.2em] text-brand/60 max-sm:truncate sm:text-[0.55rem] sm:tracking-[0.24em]">
+                                  {event.date}
+                                </span>
+                              </div>
+                              <span className="shrink-0 rounded-full border border-brand/25 bg-background/90 px-2 py-0.5 font-['Montserrat'] text-[0.45rem] font-bold uppercase tracking-[0.16em] text-brand max-sm:max-w-36 max-sm:truncate sm:px-2.5 sm:py-1 sm:text-[0.5rem] sm:tracking-[0.18em]">
+                                {event.tag}
+                              </span>
+                            </div>
+                            <h3 className="mb-2 font-['EB_Garamond'] text-lg font-normal leading-snug text-foreground max-sm:text-base sm:mb-2 sm:text-lg sm:leading-tight lg:mb-2.5 lg:text-2xl">
+                              {event.title}
+                            </h3>
+                            <p className="max-w-md font-['Montserrat'] text-[0.8rem] leading-[1.7] text-foreground/70 max-sm:text-[0.78rem] max-sm:leading-[1.65] sm:text-[0.85rem] sm:leading-[1.75]">
+                              {event.desc}
+                            </p>
+                          </div>
+                          <div className="mt-4 flex items-center justify-between border-t border-brand/10 pt-3 max-sm:mt-3 max-sm:pt-2.5 lg:mt-5 lg:pt-4">
+                            <button
+                              type="button"
+                              className="group flex items-center gap-2 font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.18em] text-brand"
+                            >
+                              <span>Register interest</span>
+                              <span className="h-px w-6 bg-brand transition-all group-hover:w-10" />
+                            </button>
+                            <span className="font-['EB_Garamond'] text-2xl italic text-brand/6 max-sm:text-xl lg:text-3xl">
+                              M
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  )
+                })}
+                {/* Base + dynamic trailing space so max scroll = “last card centered” */}
+                <div
+                  aria-hidden
+                  className="shrink-0"
+                  style={{
+                    width: `calc(max(24px, (100vw - min(92vw, 900px)) / 2) + ${trailPad}px)`,
+                  }}
+                />
+              </div>
+
+              
+            </div>
           </div>
         </div>
-      </section>
-    );
-  };
-  
-  export default MayabazarSection;
+      ) : (
+        <div className="mx-auto max-w-[1440px] space-y-10 px-4 py-16 sm:px-6 lg:px-[8%]">
+          {events.map((event, index) => {
+            const imageFirst = index % 2 === 0
+            return (
+              <article
+                key={event.id}
+                className="overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-sm"
+              >
+                <div
+                  className={`flex flex-col lg:flex-row ${imageFirst ? '' : 'lg:flex-row-reverse'}`}
+                >
+                  <div className="relative aspect-4/3 bg-[#f4f1ea] lg:w-1/2">
+                    <img src={event.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                  </div>
+                  <div className="p-8 lg:w-1/2">
+                    <h3 className="font-['EB_Garamond'] text-2xl text-foreground">{event.title}</h3>
+                    <p className="mt-3 font-['Montserrat'] text-sm text-foreground/70">{event.desc}</p>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+      )}
+    </section>
+  )
+}
+
+export default MayabazarSection
