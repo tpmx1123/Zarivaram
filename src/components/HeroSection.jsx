@@ -53,11 +53,11 @@ const HeroSection = ({ navbar }) => {
       </div>
 
       {/* Mobile: single banner image only */}
-      <div className="relative h-screen w-full lg:hidden">
+      <div className="relative h-full w-full lg:hidden">
         <img
           src={MOBILE_HERO_IMAGE}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-fill object-center"
           decoding="async"
           fetchPriority="high"
         />
