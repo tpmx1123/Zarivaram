@@ -1,86 +1,97 @@
-import React from 'react'
-
-const consultationPoints = [
-  { number: '1', label: 'The Date' },
-  { number: '2', label: 'Your Role' },
-  { number: '3', label: 'Your Vision' },
-]
-
-const whatsappUrl =
-  'https://wa.me/919000000000?text=Hello%20Zarivaram%2C%20I%20would%20like%20to%20request%20a%20private%20viewing.'
+import React, { useState } from 'react';
 
 const PrivateViewing = () => {
+  const [formData, setFormData] = useState({ date: '', role: '' });
+
+  const backgroundUrl = "https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776147179/19_Feb_-_33_2_gsfjmk.png";
+
+  const handleWhatsAppRedirect = (e) => {
+    e.preventDefault();
+    const phoneNumber = "91XXXXXXXXXX"; // Replace with actual number
+    const message = `Hello Zarivaram, I would like to request a Private Viewing.%0A%0A*Occasion Date:* ${formData.date}%0A*Role:* ${formData.role}`;
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
+
   return (
     <section
       id="private-viewing"
-      className="relative overflow-hidden border-t border-brand/20 bg-[#f6efe5] py-20 text-foreground lg:py-28"
-      aria-labelledby="private-viewing-heading"
+      className="relative flex w-full items-center justify-center overflow-hidden py-20 lg:py-18 min-h-[70vh] lg:min-h-0"
     >
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(194,151,52,0.2),transparent_45%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_85%,rgba(194,151,52,0.12),transparent_42%)]" />
-      </div>
+      {/* Background layer: Adjusted for mobile focal point */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-no-repeat bg-[75%_center] lg:bg-center"
+        style={{ backgroundImage: `url(${backgroundUrl})` }}
+        aria-hidden
+      />
+      
+      {/* Overlay: Darker on mobile for better text pop */}
+      <div
+        className="pointer-events-none absolute inset-0 z-10 bg-black/30 lg:bg-black/20"
+        aria-hidden
+      />
 
-      <div className="relative mx-auto max-w-[1440px] px-[6%] lg:px-[10%]">
-        <div className="grid items-stretch gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-          <div className="rounded-2xl border border-brand/20 bg-[#fbf7f0] p-8 sm:p-10 lg:p-12">
-            <p className="font-['Montserrat'] text-[0.62rem] font-semibold uppercase tracking-[0.32em] text-brand/90">
-              Exclusivity · Personal Service
-            </p>
-
-            <h2
-              id="private-viewing-heading"
-              className="mt-5 font-['EB_Garamond'] text-5xl font-light leading-[0.98] text-foreground sm:text-6xl lg:text-7xl"
-            >
-              Request a
-              <br />
-              <span className="italic text-brand">Private Viewing</span>
-            </h2>
-
-            <p className="mt-7 max-w-[620px] font-['Montserrat'] text-[0.85rem] leading-7 text-foreground/75 lg:text-[0.92rem]">
-              Every Zarivaram saree is presented by a consultant who understands the occasion as well as the weave.
-            </p>
-
-            <div className="mt-9 space-y-4 border-t border-brand/20 pt-8">
-              {consultationPoints.map((item) => (
-                <div key={item.number} className="flex items-center gap-4">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-brand/45 bg-white/70 font-['Montserrat'] text-[0.62rem] font-bold text-brand">
-                    {item.number}
-                  </span>
-                  <span className="font-['Montserrat'] text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-foreground/80">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-brand/25 bg-[#fffaf2] p-8 shadow-[0_16px_40px_rgba(160,120,55,0.12)] sm:p-10 lg:p-12">
-            <p className="font-['EB_Garamond'] text-[2rem] leading-tight text-foreground sm:text-[2.3rem]">
-              When is the occasion?
-            </p>
-            <p className="mt-4 font-['Montserrat'] text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-foreground/55">
-              Month · Year · City
-            </p>
-
-            <p className="mt-8 max-w-[500px] font-['Montserrat'] text-[0.8rem] leading-7 text-foreground/70">
-              Share your event details on WhatsApp and our team will personally guide you to the right weave, drape, and palette.
-            </p>
-
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-10 inline-flex items-center gap-3 border border-brand/35 bg-brand px-7 py-3 font-['Montserrat'] text-[0.66rem] font-bold uppercase tracking-[0.18em] text-white transition-all hover:bg-brand/90"
-            >
-              Continue on WhatsApp
-              <span aria-hidden>→</span>
-            </a>
-          </div>
+      <div className="relative z-20 container mx-auto flex flex-col items-center px-[6%] text-center">
+        
+        {/* Title: Scaled for mobile screens */}
+        <div className="mb-8 lg:mb-10 max-w-2xl">
+          <h2 className="font-['EB_Garamond'] text-4xl leading-tight tracking-tight text-white sm:text-5xl lg:text-4xl lg:font-extralight lg:leading-[1.15]">
+            Request a <br className="lg:hidden" />
+            Private Viewing
+          </h2>
         </div>
+
+        {/* Form: Full width on small mobile, fixed max-width on desktop */}
+        <form 
+          onSubmit={handleWhatsAppRedirect}
+          className="w-full max-w-md bg-white/15 backdrop-blur-2xl border border-white/20 p-8 lg:p-4 rounded-2xl shadow-2xl"
+        >
+          <div className="space-y-8 lg:space-y-6">
+            {/* Input: Date */}
+            <div className="text-left group border-b border-white/30 pb-2 focus-within:border-[#C29734] transition-all">
+              <label className="font-['Montserrat'] text-[0.7rem] lg:text-[0.85rem] font-bold uppercase tracking-[0.2em] text-[#C29734]">
+                The Occasion Date
+              </label>
+              <input 
+                required
+                type="text" 
+                placeholder="e.g. November 2026"
+                className="w-full bg-transparent font-['EB_Garamond'] text-xl text-white outline-none placeholder:text-white/40 mt-1"
+                onChange={(e) => setFormData({...formData, date: e.target.value})}
+              />
+            </div>
+
+            {/* Input: Role */}
+            <div className="text-left group border-b border-white/30 pb-2 focus-within:border-[#C29734] transition-all">
+              <label className="font-['Montserrat'] text-[0.7rem] lg:text-[0.85rem] font-bold uppercase tracking-[0.2em] text-[#C29734]">
+                Your Role
+              </label>
+              <input 
+                required
+                type="text" 
+                placeholder="e.g. Mother of the Bride"
+                className="w-full bg-transparent font-['EB_Garamond'] text-xl text-white outline-none placeholder:text-white/40 mt-1"
+                onChange={(e) => setFormData({...formData, role: e.target.value})}
+              />
+            </div>
+
+            {/* Submit Button: Full width tap target */}
+            <button
+              type="submit"
+              className="w-full group flex items-center justify-center gap-4 bg-[#C29734] py-5 lg:py-4 font-['Montserrat'] text-[0.75rem] font-bold uppercase tracking-[0.3em] text-black transition-all active:scale-95 lg:hover:bg-white rounded-lg"
+            >
+              <span>Confirm on WhatsApp</span>
+              <div className="h-px w-6 bg-black transition-all group-hover:w-10"></div>
+            </button>
+          </div>
+
+          <p className="mt-8 lg:mt-6 font-['Montserrat'] text-[0.55rem] font-medium uppercase tracking-widest text-white/50">
+            Secure · Discretion Guaranteed
+          </p>
+        </form>
+
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default PrivateViewing
+export default PrivateViewing;

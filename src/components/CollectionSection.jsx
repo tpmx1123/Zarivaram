@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+
 const PRIMARY_IMAGE =
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775889876/_DSC4361_wpyqbd.jpg'
 const HOVER_IMAGE =
@@ -80,12 +81,14 @@ const ZoomImage = ({ src, alt }) => {
   return (
     <div 
       ref={containerRef}
-      className="relative aspect-3/4 overflow-hidden bg-[#f4f1ea] cursor-crosshair"
+      className="relative aspect-3/4 overflow-hidden "
+      style={{
+        cursor: `url("https://res.cloudinary.com/di4caiech/image/upload/q_auto,f_auto,w_42/v1776155318/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTAxL3Jhd3BpeGVsb2ZmaWNlOF9pc29sYXRlZF92aW50YWdlX2NvbGxhZ2VfYXJ0X29mX2dvbGRfZ2xpdHRlcl9kcl9hNTAwMTgyNi00MTZkLTRlMzktYmE4OS03OWJhYTE4YWY2ZDQtbTV1c2huYzEucG5n-rem_1_2_yuntnc.png") 16 16, zoom-in`
+      }}
       onMouseEnter={() => setShowZoom(true)}
       onMouseLeave={() => setShowZoom(false)}
       onMouseMove={handleMouseMove}
     >
-      {/* Base Image */}
       <img
         src={src}
         alt={alt}
@@ -93,20 +96,18 @@ const ZoomImage = ({ src, alt }) => {
         loading="lazy"
       />
 
-      {/* Zoom Overlay (Amazon Style) */}
       {showZoom && (
         <div 
           className="absolute inset-0 z-30 pointer-events-none border-2 border-brand/20"
           style={{
             backgroundImage: `url(${src})`,
             backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
-            backgroundSize: '250%', // Magnification level
+            backgroundSize: '250%',
             backgroundRepeat: 'no-repeat'
           }}
         />
       )}
       
-      {/* Subtle branding hint when not zooming */}
       {!showZoom && (
         <div className="absolute bottom-4 right-4 text-[0.5rem] uppercase tracking-widest text-brand/40 lg:block hidden">
           Hover to inspect weave
@@ -120,7 +121,7 @@ const CollectionsSection = () => {
   return (
     <section id="collections" className="bg-background py-12 lg:py-24">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-[5%]">
-        {/* Header Section */}
+
         <div className="mb-4 flex flex-col items-start justify-between gap-8 border-b border-brand/10 pb-10 sm:mb-14 sm:gap-10 sm:pb-12 lg:mb-2 lg:flex-row lg:items-end lg:gap-10 lg:pb-16">
           <div className="relative max-w-2xl">
             <div className="absolute -left-6 top-0 hidden h-full w-px bg-brand/20 lg:block" />
@@ -134,14 +135,12 @@ const CollectionsSection = () => {
           </div>
         </div>
 
-        {/* Collections Grid */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-5 lg:gap-8 xl:gap-6">
           {collections.map((item) => (
             <article
               key={item.id}
               className="group flex flex-col overflow-hidden lg:overflow-visible transition-all duration-500"
             >
-              {/* Image with Custom Zoom Component */}
               <ZoomImage src={item.image} alt={item.title} />
 
               <div className="flex flex-1 flex-col px-5 pb-6 pt-4 sm:px-4 sm:pb-5 sm:pt-3 lg:px-0 lg:pb-0 lg:pt-6">

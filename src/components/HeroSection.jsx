@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
 
+const MOBILE_HERO_IMAGE =
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776167361/Frame_1984078964_1_a8yrns.png'
+
 const SLIDES = [
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775825710/Frame_1984078959_1_svjosp.jpg',
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776167531/Frame_1984078965_piqll0.png',
 ]
 
 const INTERVAL_MS = 5500
 
-const HeroSection = () => {
+const HeroSection = ({ navbar }) => {
   const [active, setActive] = useState(0)
 
   const goNext = useCallback(() => {
@@ -44,11 +47,15 @@ const HeroSection = () => {
   }, [goNext])
 
   return (
-    <section className="relative w-full overflow-hidden bg-black/10" aria-label="Hero imagery">
+    <section className="relative h-screen w-full overflow-hidden bg-black/10" aria-label="Hero imagery">
+      <div className="absolute inset-x-0 top-0 z-20 px-3 pt-3 md:px-5 md:pt-5">
+        {navbar}
+      </div>
+
       {/* Mobile: single banner image only */}
-      <div className="relative aspect-21/9 w-full max-h-[42vh] min-h-[140px] sm:max-h-[46vh] lg:hidden">
+      <div className="relative h-screen w-full lg:hidden">
         <img
-          src={SLIDES[0]}
+          src={MOBILE_HERO_IMAGE}
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-center"
           decoding="async"
@@ -57,7 +64,7 @@ const HeroSection = () => {
       </div>
 
       {/* Desktop: image carousel only */}
-      <div className="relative hidden min-h-[520px] h-[78vh] max-h-[900px] w-full lg:block">
+      <div className="relative hidden h-screen w-full lg:block">
         {SLIDES.map((src, i) => (
           <img
             key={src}

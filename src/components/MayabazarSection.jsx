@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+const MAYABAZAR_SECTION_BG =
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776148953/Group_1171289030_1_berloh.png'
+
 const EVENT_IMAGES = [
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775814753/_DSC4372_1_cy6epq.jpg',
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775814963/_DSC5190_copy_1_1_tmk4bw.png',
@@ -145,26 +148,33 @@ const MayabazarSection = () => {
   const showScrollStage = !reduceMotion
 
   return (
-    <section id="mayabazar" className="border-t border-brand/10 bg-background">
+    <section id="mayabazar" className="border-t border-brand/10 ">
       {showScrollStage ? (
         <div ref={ghostRef} className="relative w-full" style={{ height: `${events.length * 100}vh` }}>
-          <div className="sticky top-0 flex h-dvh w-full max-h-screen flex-col overflow-x-clip overflow-y-visible bg-background">
-            <div className="shrink-0 border-b border-brand/10 px-4 pb-5 pt-8 max-lg:max-w-full sm:px-[6%] lg:px-[10%] lg:pb-6 lg:pt-14">
+          <div className="sticky top-10 flex h-dvh w-full max-h-screen flex-col overflow-x-clip overflow-y-visible">
+            {/* Wide art: anchor left so the illustrated figure stays in frame on narrow viewports */}
+            <div
+              className="pointer-events-none absolute inset-0 z-10 bg-cover bg-left bg-no-repeat"
+              style={{ backgroundImage: `url(${MAYABAZAR_SECTION_BG})` }}
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-0 z-1 bg-background/82 backdrop-blur-[1px]"
+              aria-hidden
+            />
+
+            <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+            <div className="shrink-0 border-b border-brand/10 px-4 pb-5 pt-8 max-lg:max-w-full sm:px-[6%] lg:px-[12%] lg:pb-6 lg:pt-14">
               <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 max-lg:gap-5 lg:flex-row lg:items-end lg:gap-6">
                 <div className="max-w-3xl">
                   <span className="mb-2 block font-['Montserrat'] text-[0.55rem] font-bold uppercase tracking-[0.45em] text-brand/80 max-lg:tracking-[0.35em] lg:mb-3 lg:text-[0.6rem] lg:tracking-[0.45em]">
                     Monthly events & gatherings
                   </span>
-                  <h2 className="font-['EB_Garamond'] text-[1.55rem] font-extralight leading-[1.12] text-foreground max-lg:max-w-[20ch] sm:text-3xl sm:max-lg:text-5xl lg:text-6xl">
+                  <h2 className="font-['EB_Garamond'] text-[1.55rem] font-extralight leading-[1.12] text-white max-lg:max-w-[20ch] sm:text-3xl sm:max-lg:text-5xl lg:text-5xl">
                     Mayabazar — <span className=" text-brand">the pop-up show</span>
                   </h2>
                 </div>
-                <div className="hidden text-right lg:block">
-                  <div className="mb-2 ml-auto h-px w-24 bg-brand/20" />
-                  <p className="font-['EB_Garamond'] text-xs italic tracking-widest text-brand/60">
-                    Journal {new Date().getFullYear()}
-                  </p>
-                </div>
+                
               </div>
             </div>
 
@@ -260,10 +270,18 @@ const MayabazarSection = () => {
 
               
             </div>
+            </div>
           </div>
         </div>
       ) : (
-        <div className="mx-auto max-w-[1440px] space-y-10 px-4 py-16 sm:px-6 lg:px-[8%]">
+        <div className="relative overflow-hidden">
+          <div
+            className="pointer-events-none absolute inset-0 z-0 bg-cover bg-left bg-no-repeat opacity-40"
+            style={{ backgroundImage: `url(${MAYABAZAR_SECTION_BG})` }}
+            aria-hidden
+          />
+          <div className="pointer-events-none absolute inset-0 z-1 bg-background/90" aria-hidden />
+          <div className="relative z-10 mx-auto max-w-[1440px] space-y-10 px-4 py-16 sm:px-6 lg:px-[8%]">
           {events.map((event, index) => {
             const imageFirst = index % 2 === 0
             return (
@@ -285,6 +303,7 @@ const MayabazarSection = () => {
               </article>
             )
           })}
+          </div>
         </div>
       )}
     </section>

@@ -23,10 +23,10 @@ const HeritageSection = () => {
     ];
   
     // Watermark logo URL
-    const logoWatermarkUrl = "https://res.cloudinary.com/di4caiech/image/upload/v1775801366/Adobe_Express_-_file_14_4_g0bxak.png";
+    const logoWatermarkUrl = "https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776155318/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTAxL3Jhd3BpeGVsb2ZmaWNlOF9pc29sYXRlZF92aW50YWdlX2NvbGxhZ2VfYXJ0X29mX2dvbGRfZ2xpdHRlcl9kcl9hNTAwMTgyNi00MTZkLTRlMzktYmE4OS03OWJhYTE4YWY2ZDQtbTV1c2huYzEucG5n-rem_1_2_yuntnc.png";
   
     return (
-      <section className="relative  py-20 lg:py-22 overflow-hidden">
+      <section id="about" className="relative py-20 lg:py-22 overflow-hidden">
         
         {/* Editorial Decorative Watermark (Logo as faint background) */}
         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.10] select-none pointer-events-none transform pt-60 ">
