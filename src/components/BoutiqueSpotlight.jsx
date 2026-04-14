@@ -51,7 +51,7 @@ const BoutiqueSpotlight = () => {
     { label: "Craft time", value: "18 days · 2 weavers" }
   ].map((spec, index) => (
     /* Changed justify-between to a grid layout */
-    <div key={index} className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] py-4 group cursor-default gap-40">
+    <div key={index} className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] py-4 group cursor-default gap-20 lg:gap-35">
       <span className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-brand/80 group-hover:text-brand transition-colors">
         {spec.label}
       </span>
