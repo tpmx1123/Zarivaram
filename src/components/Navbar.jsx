@@ -26,8 +26,8 @@ const Navbar = () => {
   return (
     <>
       {/* Glass navbar over hero image */}
-      <nav className="z-70 flex items-center justify-between px-3 sm:px-4 md:px-6 ">
-        <a href="/" className="shrink-0">
+      <nav className="relative z-70 flex items-center justify-between px-3 sm:px-4 md:px-6 bg-white/80 backdrop-blur-lg border-b border-brand/15 rounded-full py-2">
+        <a href="/" className=" shrink-0">
           <img
             src={logoUrl}
             alt="Zarivaram"
@@ -35,12 +35,12 @@ const Navbar = () => {
           />
         </a>
 
-        <div className="hidden items-center gap-7 xl:gap-9 lg:flex ">
+        <div className="hidden items-center gap-7 xl:gap-9 xl:flex ">
           {PRIMARY_NAV.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-xs uppercase font-['Montserrat'] font-bold tracking-[0.1em] text-white transition-colors hover:text-white"
+              className="text-xs uppercase font-['Montserrat'] font-bold tracking-[0.1em] text-brand transition-colors hover:text-brand"
             >
               {navLinkText(link)}
             </a>
@@ -55,7 +55,7 @@ const Navbar = () => {
 
         <button
           type="button"
-          className="relative z-80 flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-full border border-transparent transition-colors hover:border-brand/15 hover:bg-brand/5 lg:hidden"
+          className="relative z-80 flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-full border border-transparent transition-colors hover:border-brand/15 hover:bg-brand/5 xl:hidden"
           aria-expanded={isOpen}
           aria-controls="mobile-menu-overlay"
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
@@ -80,7 +80,7 @@ const Navbar = () => {
       {/* Sibling of <nav>: fixed overlay is NOT trapped by nav backdrop-filter */}
       <div
         id="mobile-menu-overlay"
-        className={`fixed inset-0 z-60 flex flex-col items-center justify-center bg-background/95 backdrop-blur-lg lg:hidden ${
+        className={`fixed inset-0 z-60 flex flex-col items-center justify-center bg-background/95 backdrop-blur-lg xl:hidden ${
           isOpen ? 'pointer-events-auto visible opacity-100' : 'pointer-events-none invisible opacity-0'
         } transition-[opacity,visibility] duration-300 ease-out`}
         aria-hidden={!isOpen}

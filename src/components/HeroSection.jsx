@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 const MOBILE_HERO_IMAGE =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776167361/Frame_1984078964_1_a8yrns.png'
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776228551/Frame_1984078964_2_quwiet.png'
 
 const SLIDES = [
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776228228/Frame_1984078965_1_sde62x.png',
@@ -17,7 +17,7 @@ const HeroSection = ({ navbar }) => {
   }, [])
 
   useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 1024px)')
+    const desktop = window.matchMedia('(min-width: 1280px)')
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
     let timer
 
@@ -57,7 +57,7 @@ const HeroSection = ({ navbar }) => {
         <img
           src={MOBILE_HERO_IMAGE}
           alt=""
-          className="absolute inset-0 h-full w-full object-fill object-center"
+          className="absolute inset-0 h-full w-full object-fit object-center"
           decoding="async"
           fetchPriority="high"
         />

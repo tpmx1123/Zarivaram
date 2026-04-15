@@ -164,13 +164,13 @@ const MayabazarSection = () => {
             />
 
             <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-            <div className="shrink-0 border-b border-brand/10 px-4 pb-5 pt-8 max-lg:max-w-full sm:px-[6%] lg:px-[12%] lg:pb-6 lg:pt-14">
-              <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 max-lg:gap-5 lg:flex-row lg:items-end lg:gap-6">
+            <div className="shrink-0 border-b border-brand/10 px-4 pb-5 pt-8 max-xl:max-w-full sm:px-[6%] xl:px-[12%] xl:pb-6 xl:pt-14">
+              <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 max-xl:gap-5 xl:flex-row xl:items-end xl:gap-6">
                 <div className="max-w-3xl">
-                  <span className="mb-2 block font-['Montserrat'] text-[0.55rem] font-bold uppercase tracking-[0.45em] text-brand/80 max-lg:tracking-[0.35em] lg:mb-3 lg:text-[0.6rem] lg:tracking-[0.45em]">
+                  <span className="mb-2 block font-['Montserrat'] text-[0.55rem] font-bold uppercase tracking-[0.45em] text-brand/80 max-xl:tracking-[0.35em] xl:mb-3 xl:text-[0.6rem] xl:tracking-[0.45em]">
                     Monthly events & gatherings
                   </span>
-                  <h2 className="font-['EB_Garamond'] text-[1.55rem] font-extralight leading-[1.12] text-white max-lg:max-w-[20ch] sm:text-3xl sm:max-lg:text-5xl lg:text-5xl">
+                  <h2 className="font-['EB_Garamond'] text-[1.55rem] font-extralight leading-[1.12] text-white max-xl:max-w-[20ch] sm:text-3xl sm:max-xl:text-5xl xl:text-5xl">
                     Mayabazar — <span className=" text-brand">the pop-up show</span>
                   </h2>
                 </div>
@@ -180,11 +180,11 @@ const MayabazarSection = () => {
 
             <div
               ref={viewportRef}
-              className="relative flex min-h-0 flex-1 flex-col overflow-x-clip overflow-y-visible pb-12 pt-1 max-sm:pb-14 sm:pb-10 lg:pb-16"
+              className="relative flex min-h-0 flex-1 flex-col overflow-x-clip overflow-y-visible pb-12 pt-1 max-sm:pb-14 sm:pb-10 xl:pb-16"
             >
               <div
                 ref={trackRef}
-                className="flex min-h-0 w-full flex-1 items-center gap-6 px-[5%] py-5 will-change-transform max-sm:gap-4 max-sm:px-3 max-sm:py-4 sm:gap-8 sm:px-[5%] sm:py-6 lg:items-stretch lg:gap-10 lg:px-[8%] lg:py-8"
+                className="flex min-h-0 w-full flex-1 items-center gap-6 px-[5%] py-5 will-change-transform max-sm:gap-4 max-sm:px-3 max-sm:py-4 sm:gap-8 sm:px-[5%] sm:py-6 xl:items-stretch xl:gap-10 xl:px-[8%] xl:py-8"
                 style={{
                   transform: `translate3d(-${translatePx}px, 0, 0)`,
                 }}
@@ -197,35 +197,35 @@ const MayabazarSection = () => {
                     <article
                       key={event.id}
                       data-maya-card
-                      className="flex w-[min(88vw,900px)] shrink-0 origin-center overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-[0_12px_40px_rgba(47,38,19,0.07)] max-sm:rounded-xl sm:w-[min(92vw,900px)] max-lg:h-auto max-lg:max-h-[min(68dvh,500px)] max-lg:min-h-[min(38svh,280px)] lg:h-full lg:min-h-[min(52vh,400px)] lg:max-h-[min(62vh,480px)] lg:shadow-[0_16px_50px_rgba(47,38,19,0.08)]"
+                      className="flex w-[min(88vw,900px)] shrink-0 origin-center overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-[0_12px_40px_rgba(47,38,19,0.07)] max-sm:rounded-xl sm:w-[min(92vw,900px)] max-xl:h-auto max-xl:max-h-[min(68dvh,500px)] max-xl:min-h-[min(38svh,280px)] xl:h-full xl:min-h-[min(52vh,400px)] xl:max-h-[min(62vh,480px)] xl:shadow-[0_16px_50px_rgba(47,38,19,0.08)]"
                       style={{
                         opacity: o,
                         transform: `scale(${s})`,
                       }}
                     >
                       <div
-                        className={`flex min-h-0 w-full flex-1 flex-col lg:flex-row lg:items-stretch ${
-                          imageFirst ? '' : 'lg:flex-row-reverse'
+                        className={`flex min-h-0 w-full flex-1 flex-col xl:flex-row xl:items-stretch ${
+                          imageFirst ? '' : 'xl:flex-row-reverse'
                         }`}
                       >
-                        <div className="relative aspect-16/10 w-full shrink-0 bg-[#f4f1ea] max-sm:aspect-3/2 lg:aspect-auto lg:h-full lg:min-h-0 lg:w-[46%]">
+                        <div className="relative aspect-16/10 w-full shrink-0 bg-[#f4f1ea] max-sm:aspect-3/2 xl:aspect-auto xl:h-full xl:min-h-0 xl:w-[46%]">
                           <img
                             src={event.image}
                             alt=""
                             className="absolute inset-0 h-full w-full object-cover"
                             loading={index === 0 ? 'eager' : 'lazy'}
                           />
-                          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent lg:bg-linear-to-r" />
+                          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent xl:bg-linear-to-r" />
                         </div>
 
-                        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col justify-between p-4 max-sm:p-3.5 sm:p-6 lg:w-[54%] lg:py-7 lg:pl-7 lg:pr-7">
+                        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col justify-between p-4 max-sm:p-3.5 sm:p-6 xl:w-[54%] xl:py-7 xl:pl-7 xl:pr-7">
                           <div>
-                            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 max-sm:mb-2 max-sm:gap-1.5 lg:mb-4">
+                            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 max-sm:mb-2 max-sm:gap-1.5 xl:mb-4">
                               <div className="flex min-w-0 flex-1 items-center gap-2">
-                                <span className="font-['EB_Garamond'] text-base italic text-brand/40 max-sm:text-sm lg:text-lg">
+                                <span className="font-['EB_Garamond'] text-base italic text-brand/40 max-sm:text-sm xl:text-lg">
                                   {event.id}
                                 </span>
-                                <span className="h-px w-5 shrink-0 bg-brand/20 lg:w-6" />
+                                <span className="h-px w-5 shrink-0 bg-brand/20 xl:w-6" />
                                 <span className="font-['Montserrat'] text-[0.5rem] font-bold uppercase tracking-[0.2em] text-brand/60 max-sm:truncate sm:text-[0.55rem] sm:tracking-[0.24em]">
                                   {event.date}
                                 </span>
@@ -234,14 +234,14 @@ const MayabazarSection = () => {
                                 {event.tag}
                               </span>
                             </div>
-                            <h3 className="mb-2 font-['EB_Garamond'] text-lg font-normal leading-snug text-foreground max-sm:text-base sm:mb-2 sm:text-lg sm:leading-tight lg:mb-2.5 lg:text-2xl">
+                            <h3 className="mb-2 font-['EB_Garamond'] text-lg font-normal leading-snug text-foreground max-sm:text-base sm:mb-2 sm:text-lg sm:leading-tight xl:mb-2.5 xl:text-2xl">
                               {event.title}
                             </h3>
                             <p className="max-w-md font-['Montserrat'] text-[0.8rem] leading-[1.7] text-foreground/70 max-sm:text-[0.78rem] max-sm:leading-[1.65] sm:text-[0.85rem] sm:leading-[1.75]">
                               {event.desc}
                             </p>
                           </div>
-                          <div className="mt-4 flex items-center justify-between border-t border-brand/10 pt-3 max-sm:mt-3 max-sm:pt-2.5 lg:mt-5 lg:pt-4">
+                          <div className="mt-4 flex items-center justify-between border-t border-brand/10 pt-3 max-sm:mt-3 max-sm:pt-2.5 xl:mt-5 xl:pt-4">
                             <button
                               type="button"
                               className="group flex items-center gap-2 font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.18em] text-brand"
@@ -249,7 +249,7 @@ const MayabazarSection = () => {
                               <span>Register interest</span>
                               <span className="h-px w-6 bg-brand transition-all group-hover:w-10" />
                             </button>
-                            <span className="font-['EB_Garamond'] text-2xl italic text-brand/6 max-sm:text-xl lg:text-3xl">
+                            <span className="font-['EB_Garamond'] text-2xl italic text-brand/6 max-sm:text-xl xl:text-3xl">
                               M
                             </span>
                           </div>
@@ -281,7 +281,7 @@ const MayabazarSection = () => {
             aria-hidden
           />
           <div className="pointer-events-none absolute inset-0 z-1 bg-background/90" aria-hidden />
-          <div className="relative z-10 mx-auto max-w-[1440px] space-y-10 px-4 py-16 sm:px-6 lg:px-[8%]">
+          <div className="relative z-10 mx-auto max-w-[1440px] space-y-10 px-4 py-16 sm:px-6 xl:px-[8%]">
           {events.map((event, index) => {
             const imageFirst = index % 2 === 0
             return (
@@ -290,12 +290,12 @@ const MayabazarSection = () => {
                 className="overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-sm"
               >
                 <div
-                  className={`flex flex-col lg:flex-row ${imageFirst ? '' : 'lg:flex-row-reverse'}`}
+                  className={`flex flex-col xl:flex-row ${imageFirst ? '' : 'xl:flex-row-reverse'}`}
                 >
-                  <div className="relative aspect-4/3 bg-[#f4f1ea] lg:w-1/2">
+                  <div className="relative aspect-4/3 bg-[#f4f1ea] xl:w-1/2">
                     <img src={event.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
                   </div>
-                  <div className="p-8 lg:w-1/2">
+                  <div className="p-8 xl:w-1/2">
                     <h3 className="font-['EB_Garamond'] text-2xl text-foreground">{event.title}</h3>
                     <p className="mt-3 font-['Montserrat'] text-sm text-foreground/70">{event.desc}</p>
                   </div>
