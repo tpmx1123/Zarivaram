@@ -4,7 +4,7 @@ const MOBILE_HERO_IMAGE =
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776167361/Frame_1984078964_1_a8yrns.png'
 
 const SLIDES = [
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776167531/Frame_1984078965_piqll0.png',
+  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776228228/Frame_1984078965_1_sde62x.png',
 ]
 
 const INTERVAL_MS = 5500
