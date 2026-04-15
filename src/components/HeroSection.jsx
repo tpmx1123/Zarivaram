@@ -48,7 +48,7 @@ const HeroSection = ({ navbar }) => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black/10" aria-label="Hero imagery">
-      <div className="absolute inset-x-0 top-0 z-20 px-3 pt-3 md:px-5 md:pt-5">
+      <div className="fixed inset-x-0 top-0 z-[100] px-3 pt-3 md:px-5 md:pt-5">
         {navbar}
       </div>
 

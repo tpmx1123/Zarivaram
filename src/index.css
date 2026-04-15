@@ -81,3 +81,29 @@
     transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   }
 }
+
+@layer utilities {
+  .scroll-reveal {
+    opacity: 0;
+    transform: translate3d(var(--reveal-x, 0px), var(--reveal-y, 28px), 0);
+    transition-property: opacity, transform;
+    transition-duration: var(--reveal-duration, 700ms);
+    transition-delay: var(--reveal-delay, 0ms);
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
