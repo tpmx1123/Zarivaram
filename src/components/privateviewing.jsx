@@ -15,7 +15,7 @@ const PrivateViewing = () => {
   return (
     <section
       id="private-viewing"
-      className="relative flex w-full items-center justify-center overflow-hidden py-20 lg:py-18 min-h-[70vh] lg:min-h-0"
+      className="relative flex w-full items-center justify-center overflow-hidden py-20 lg:py-28 min-h-[70vh] lg:min-h-0"
     >
       {/* Background layer: Adjusted for mobile focal point */}
       <div
@@ -43,7 +43,7 @@ const PrivateViewing = () => {
         {/* Form: Full width on small mobile, fixed max-width on desktop */}
         <form 
           onSubmit={handleWhatsAppRedirect}
-          className="w-full max-w-md bg-white/15 backdrop-blur-2xl border border-white/20 p-8 lg:p-4 rounded-2xl shadow-2xl"
+          className="w-full max-w-md bg-white/15 backdrop-blur-2xl border border-white/20 p-8 lg:p-10 rounded-2xl shadow-2xl"
         >
           <div className="space-y-8 lg:space-y-6">
             {/* Input: Date */}
@@ -84,9 +84,7 @@ const PrivateViewing = () => {
             </button>
           </div>
 
-          <p className="mt-8 lg:mt-6 font-['Montserrat'] text-[0.55rem] font-medium uppercase tracking-widest text-white/50">
-            Secure · Discretion Guaranteed
-          </p>
+          
         </form>
 
       </div>
