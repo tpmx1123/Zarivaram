@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
 const MOBILE_HERO_IMAGE =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776228551/Frame_1984078964_2_quwiet.png'
+  'https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678195/Frame_1984078964_2_qsjmut.png'
 
 const SLIDES = [
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776228228/Frame_1984078965_1_sde62x.png',
+  'https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678195/Frame_1984078965_1_ovwbde.png',
 ]
 
 const INTERVAL_MS = 5500

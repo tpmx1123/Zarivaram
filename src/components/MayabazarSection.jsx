@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const MAYABAZAR_SECTION_BG =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776148953/Group_1171289030_1_berloh.png'
+  'https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678195/Group_1171289197_qucgmd.png'
+const MAYABAZAR_SECTION_BG_MOBILE =
+  'https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678194/Contest_Story_2_n9k2rw.png'
 
 const EVENT_IMAGES = [
   'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775814753/_DSC4372_1_cy6epq.jpg',
@@ -59,70 +61,42 @@ function cardFocusScale(index, progress) {
 
 const MayabazarSection = () => {
   const ghostRef = useRef(null)
-  const viewportRef = useRef(null)
   const trackRef = useRef(null)
   const [progress, setProgress] = useState(0)
   const [maxTranslate, setMaxTranslate] = useState(0)
-  /** Extra width after the last card so scroll can end with card 04 centered. */
-  const [trailPad, setTrailPad] = useState(0)
-  const [reduceMotion, setReduceMotion] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  )
-
-  const syncTrailPad = useCallback(() => {
-    const track = trackRef.current
-    const view = viewportRef.current
-    if (!track || !view) return
-    const vw = view.clientWidth
-    const cards = track.querySelectorAll('[data-maya-card]')
-    const last = cards[cards.length - 1]
-    if (!last) return
-    const desired = Math.max(0, last.offsetLeft + last.offsetWidth / 2 - vw / 2)
-    const range = Math.max(0, track.scrollWidth - vw)
-    const deficit = desired - range
-    setTrailPad((prev) => {
-      if (deficit > 2) return Math.max(prev, Math.ceil(deficit + 16))
-      if (deficit < -96) return 0
-      return prev
-    })
-  }, [])
-
-  const syncMaxTranslate = useCallback(() => {
-    const track = trackRef.current
-    const view = viewportRef.current
-    if (!track || !view) return
-    const vw = view.clientWidth
-    const cards = track.querySelectorAll('[data-maya-card]')
-    const last = cards[cards.length - 1]
-    if (!last) return
-    const desired = Math.max(0, last.offsetLeft + last.offsetWidth / 2 - vw / 2)
-    const range = Math.max(0, track.scrollWidth - vw)
-    setMaxTranslate(Math.min(desired, range))
-  }, [])
+  const [initialOffset, setInitialOffset] = useState(0)
 
   useLayoutEffect(() => {
-    syncTrailPad()
-    const ro = new ResizeObserver(() => syncTrailPad())
-    if (viewportRef.current) ro.observe(viewportRef.current)
-    if (trackRef.current) ro.observe(trackRef.current)
-    window.addEventListener('resize', syncTrailPad)
-    return () => {
-      ro.disconnect()
-      window.removeEventListener('resize', syncTrailPad)
+    const calculateBounds = () => {
+      const track = trackRef.current
+      if (!track) return
+
+      const vw = window.innerWidth
+      const cards = track.querySelectorAll('[data-maya-card]')
+      if (cards.length === 0) return
+
+      const firstCard = cards[0]
+      const lastCard = cards[cards.length - 1]
+
+      // 1. Calculate Initial Offset: Centers the first card on load
+      const firstCardWidth = firstCard.offsetWidth
+      const startOffset = (vw - firstCardWidth) / 2
+      setInitialOffset(startOffset)
+
+      // 2. Calculate Max Translate: 
+      // The distance between the center of the first card and the center of the last card
+      const firstCardCenter = firstCard.offsetLeft + firstCardWidth / 2
+      const lastCardCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2
+      
+      // This ensures that when progress is 1, the last card's center is at the same 
+      // visual position the first card's center was at progress 0.
+      setMaxTranslate(lastCardCenter - firstCardCenter)
     }
-  }, [syncTrailPad])
 
-  useLayoutEffect(() => {
-    syncMaxTranslate()
-  }, [trailPad, syncMaxTranslate])
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const onMq = () => setReduceMotion(mq.matches)
-    mq.addEventListener('change', onMq)
-    return () => mq.removeEventListener('change', onMq)
+    // Run on mount and resize
+    calculateBounds()
+    window.addEventListener('resize', calculateBounds)
+    return () => window.removeEventListener('resize', calculateBounds)
   }, [])
 
   useEffect(() => {
@@ -135,177 +109,100 @@ const MayabazarSection = () => {
       const p = denom > 0 ? Math.min(1, Math.max(0, -top / denom)) : 0
       setProgress(p)
     }
-    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const translatePx = maxTranslate > 0 ? Math.min(progress * maxTranslate, maxTranslate) : 0
-  const showScrollStage = !reduceMotion
+  // The actual movement logic
+  const translatePx = progress * maxTranslate
 
   return (
-    <section id="mayabazar" className="border-t border-brand/10 ">
-      {showScrollStage ? (
-        <div ref={ghostRef} className="relative w-full" style={{ height: `${events.length * 100}vh` }}>
-          <div className="sticky top-10 flex h-dvh w-full max-h-screen flex-col overflow-x-clip overflow-y-visible">
-            {/* Wide art: anchor left so the illustrated figure stays in frame on narrow viewports */}
-            <div
-              className="pointer-events-none absolute inset-0 z-10 bg-cover bg-left bg-no-repeat"
-              style={{ backgroundImage: `url(${MAYABAZAR_SECTION_BG})` }}
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-0 z-1 bg-background/82 backdrop-blur-[1px]"
-              aria-hidden
-            />
+    <section id="mayabazar" className="border-t border-brand/10 bg-background">
+      <div ref={ghostRef} className="relative w-full" style={{ height: `${events.length * 150}vh` }}>
+        <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden">
+          
+          {/* Background Layers (Keep original) */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:hidden" style={{ backgroundImage: `url(${MAYABAZAR_SECTION_BG_MOBILE})` }} />
+            <div className="absolute inset-0 hidden bg-cover bg-left bg-no-repeat lg:block" style={{ backgroundImage: `url(${MAYABAZAR_SECTION_BG})` }} />
+            <div className="absolute inset-0 bg-background/85 backdrop-blur-[2px]" />
+          </div>
 
-            <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-            <div className="shrink-0 border-b border-brand/10 px-4 pb-5 pt-8 max-xl:max-w-full sm:px-[6%] xl:px-[12%] xl:pb-6 xl:pt-14">
-              <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 max-xl:gap-5 xl:flex-row xl:items-end xl:gap-6">
-                <div className="max-w-3xl">
-                  <span className="mb-2 block font-['Montserrat'] text-[0.55rem] font-bold uppercase tracking-[0.45em] text-brand/80 max-xl:tracking-[0.35em] xl:mb-3 xl:text-[0.6rem] xl:tracking-[0.45em]">
-                    Monthly events & gatherings
-                  </span>
-                  <h2 className="font-['EB_Garamond'] text-[1.55rem] font-extralight leading-[1.12] text-white max-xl:max-w-[20ch] sm:text-3xl sm:max-xl:text-5xl xl:text-5xl">
-                    Mayabazar — <span className=" text-brand">the pop-up show</span>
-                  </h2>
-                </div>
-                
-              </div>
+          <div className="relative z-10 flex h-full flex-col">
+            {/* Header */}
+            <div className="px-[6%] pt-6 mb-2 lg:px-[12%] lg:pt-10 lg:mb-10 shrink-0">
+              <span className="mb-2 block font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.4em] text-brand/80">
+                Monthly events & gatherings
+              </span>
+              <h2 className="font-['EB_Garamond'] text-2xl font-extralight text-foreground lg:text-6xl">
+                Mayabazar — <span className="text-brand">the pop-up show</span>
+              </h2>
             </div>
 
-            <div
-              ref={viewportRef}
-              className="relative flex min-h-0 flex-1 flex-col overflow-x-clip overflow-y-visible pb-12 pt-1 max-sm:pb-14 sm:pb-10 xl:pb-16"
-            >
+            {/* Horizontal Track Area */}
+            <div className="relative flex flex-1 items-center overflow-visible">
               <div
                 ref={trackRef}
-                className="flex min-h-0 w-full flex-1 items-center gap-6 px-[5%] py-5 will-change-transform max-sm:gap-4 max-sm:px-3 max-sm:py-4 sm:gap-8 sm:px-[5%] sm:py-6 xl:items-stretch xl:gap-10 xl:px-[8%] xl:py-8"
+                className="flex items-center gap-8 lg:gap-20 will-change-transform"
                 style={{
-                  transform: `translate3d(-${translatePx}px, 0, 0)`,
+                  // Start at initialOffset and subtract the progress-based translation
+                  transform: `translate3d(${initialOffset - translatePx}px, 0, 0)`,
+                  transition: 'transform 0.1s ease-out'
                 }}
               >
                 {events.map((event, index) => {
-                  const imageFirst = index % 2 === 0
                   const o = cardFocusOpacity(index, progress)
                   const s = cardFocusScale(index, progress)
+                  
                   return (
                     <article
                       key={event.id}
                       data-maya-card
-                      className="flex w-[min(88vw,900px)] shrink-0 origin-center overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-[0_12px_40px_rgba(47,38,19,0.07)] max-sm:rounded-xl sm:w-[min(92vw,900px)] max-xl:h-auto max-xl:max-h-[min(68dvh,500px)] max-xl:min-h-[min(38svh,280px)] xl:h-full xl:min-h-[min(52vh,400px)] xl:max-h-[min(62vh,480px)] xl:shadow-[0_16px_50px_rgba(47,38,19,0.08)]"
+                      className="group relative flex w-[85vw] shrink-0 flex-col overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-2xl sm:w-[75vw] lg:w-[850px]"
                       style={{
                         opacity: o,
                         transform: `scale(${s})`,
+                        transition: 'opacity 0.4s ease, transform 0.4s ease'
                       }}
                     >
-                      <div
-                        className={`flex min-h-0 w-full flex-1 flex-col xl:flex-row xl:items-stretch ${
-                          imageFirst ? '' : 'xl:flex-row-reverse'
-                        }`}
-                      >
-                        <div className="relative aspect-16/10 w-full shrink-0 bg-[#f4f1ea] max-sm:aspect-3/2 xl:aspect-auto xl:h-full xl:min-h-0 xl:w-[46%]">
-                          <img
-                            src={event.image}
-                            alt=""
-                            className="absolute inset-0 h-full w-full object-cover"
-                            loading={index === 0 ? 'eager' : 'lazy'}
-                          />
-                          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent xl:bg-linear-to-r" />
+                      {/* Card Content (Keep original) */}
+                      <div className="flex flex-col lg:flex-row">
+                        <div className="relative aspect-16/10 w-full lg:aspect-auto lg:w-[46%]">
+                          <img src={event.image} alt={event.title} className="absolute inset-0 h-full w-full object-cover" />
                         </div>
-
-                        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col justify-between p-4 max-sm:p-3.5 sm:p-6 xl:w-[54%] xl:py-7 xl:pl-7 xl:pr-7">
+                        <div className="flex flex-1 flex-col justify-between p-6 lg:p-12">
                           <div>
-                            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 max-sm:mb-2 max-sm:gap-1.5 xl:mb-4">
-                              <div className="flex min-w-0 flex-1 items-center gap-2">
-                                <span className="font-['EB_Garamond'] text-base italic text-brand/40 max-sm:text-sm xl:text-lg">
-                                  {event.id}
-                                </span>
-                                <span className="h-px w-5 shrink-0 bg-brand/20 xl:w-6" />
-                                <span className="font-['Montserrat'] text-[0.5rem] font-bold uppercase tracking-[0.2em] text-brand/60 max-sm:truncate sm:text-[0.55rem] sm:tracking-[0.24em]">
-                                  {event.date}
-                                </span>
-                              </div>
-                              <span className="shrink-0 rounded-full border border-brand/25 bg-background/90 px-2 py-0.5 font-['Montserrat'] text-[0.45rem] font-bold uppercase tracking-[0.16em] text-brand max-sm:max-w-36 max-sm:truncate sm:px-2.5 sm:py-1 sm:text-[0.5rem] sm:tracking-[0.18em]">
-                                {event.tag}
-                              </span>
+                            <div className="mb-4 flex items-center justify-between">
+                              <span className="font-['Montserrat'] text-[0.6rem] font-bold text-brand/60 uppercase tracking-widest">{event.date}</span>
+                              <span className="rounded-full border border-brand/20 px-2 py-0.5 font-['Montserrat'] text-[0.5rem] font-bold uppercase text-brand">{event.tag}</span>
                             </div>
-                            <h3 className="mb-2 font-['EB_Garamond'] text-lg font-normal leading-snug text-foreground max-sm:text-base sm:mb-2 sm:text-lg sm:leading-tight xl:mb-2.5 xl:text-2xl">
-                              {event.title}
-                            </h3>
-                            <p className="max-w-md font-['Montserrat'] text-[0.8rem] leading-[1.7] text-foreground/70 max-sm:text-[0.78rem] max-sm:leading-[1.65] sm:text-[0.85rem] sm:leading-[1.75]">
-                              {event.desc}
-                            </p>
+                            <h3 className="mb-3 font-['EB_Garamond'] text-2xl text-foreground lg:text-4xl">{event.title}</h3>
+                            <p className="font-['Montserrat'] text-[0.85rem] leading-relaxed text-foreground/70">{event.desc}</p>
                           </div>
-                          <div className="mt-4 flex items-center justify-between border-t border-brand/10 pt-3 max-sm:mt-3 max-sm:pt-2.5 xl:mt-5 xl:pt-4">
-                            <button
-                              type="button"
-                              className="group flex items-center gap-2 font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.18em] text-brand"
-                            >
-                              <span>Register interest</span>
-                              <span className="h-px w-6 bg-brand transition-all group-hover:w-10" />
-                            </button>
-                            <span className="font-['EB_Garamond'] text-2xl italic text-brand/6 max-sm:text-xl xl:text-3xl">
-                              M
-                            </span>
+                          <div className="mt-8 flex items-center justify-between border-t border-brand/10 pt-5">
+                            <button className="font-['Montserrat'] text-[0.65rem] font-bold uppercase tracking-[0.2em] text-brand">Register interest →</button>
+                            <span className="font-['EB_Garamond'] text-3xl italic text-brand/10">{event.id}</span>
                           </div>
                         </div>
                       </div>
                     </article>
                   )
                 })}
-                {/* Base + dynamic trailing space so max scroll = “last card centered” */}
-                <div
-                  aria-hidden
-                  className="shrink-0"
-                  style={{
-                    width: `calc(max(24px, (100vw - min(92vw, 900px)) / 2) + ${trailPad}px)`,
-                  }}
+              </div>
+            </div>
+
+            {/* Progress Bar (Keep original) */}
+            <div className="px-[10%] pb-12 lg:pb-20 shrink-0">
+              <div className="h-px w-full bg-brand/10">
+                <div 
+                  className="h-full bg-brand transition-all duration-300 ease-out" 
+                  style={{ width: `${progress * 100}%` }}
                 />
               </div>
-
-              
-            </div>
             </div>
           </div>
         </div>
-      ) : (
-        <div className="relative overflow-hidden">
-          <div
-            className="pointer-events-none absolute inset-0 z-0 bg-cover bg-left bg-no-repeat opacity-40"
-            style={{ backgroundImage: `url(${MAYABAZAR_SECTION_BG})` }}
-            aria-hidden
-          />
-          <div className="pointer-events-none absolute inset-0 z-1 bg-background/90" aria-hidden />
-          <div className="relative z-10 mx-auto max-w-[1440px] space-y-10 px-4 py-16 sm:px-6 xl:px-[8%]">
-          {events.map((event, index) => {
-            const imageFirst = index % 2 === 0
-            return (
-              <article
-                key={event.id}
-                className="overflow-hidden rounded-2xl border border-brand/10 bg-white/95 shadow-sm"
-              >
-                <div
-                  className={`flex flex-col xl:flex-row ${imageFirst ? '' : 'xl:flex-row-reverse'}`}
-                >
-                  <div className="relative aspect-4/3 bg-[#f4f1ea] xl:w-1/2">
-                    <img src={event.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                  </div>
-                  <div className="p-8 xl:w-1/2">
-                    <h3 className="font-['EB_Garamond'] text-2xl text-foreground">{event.title}</h3>
-                    <p className="mt-3 font-['Montserrat'] text-sm text-foreground/70">{event.desc}</p>
-                  </div>
-                </div>
-              </article>
-            )
-          })}
-          </div>
-        </div>
-      )}
+      </div>
     </section>
   )
 }

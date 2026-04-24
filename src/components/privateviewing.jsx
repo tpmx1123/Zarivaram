@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const PrivateViewing = () => {
   const [formData, setFormData] = useState({ date: '', role: '' });
 
-  const backgroundUrl = "https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776147179/19_Feb_-_33_2_gsfjmk.png";
+  const backgroundUrl = "https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678828/19_Feb_-_33_2_sr01ky.png";
 
   const handleWhatsAppRedirect = (e) => {
     e.preventDefault();

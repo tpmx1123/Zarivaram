@@ -1,10 +1,10 @@
 import { PRIMARY_NAV, REQUEST_VIEWING } from '../constants/navigation'
 
 const FOOTER_BG =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776145167/MB_Teaser_Seson_4_wjmesh.png'
+  'https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678827/MB_Teaser_Seson_4_vois6m.png'
 
 const FOOTER_LOGO =
-  'https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776145219/Group_1171289163_zts3ju.png'
+  'https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678826/Group_1171289163_tnrrat.png'
 
 const Footer = () => {
   const year = new Date().getFullYear()
@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <footer className="relative overflow-hidden border-t border-brand/15">
       <div
-        className="pointer-events-none absolute inset-0 z-10 bg-cover bg-no-repeat  "
+        className="pointer-events-none absolute inset-0 z-10 bg-cover bg-bottom bg-no-repeat"
         style={{ backgroundImage: `url(${FOOTER_BG})`}}
         aria-hidden
       />
@@ -21,7 +21,7 @@ const Footer = () => {
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center gap-10 px-[6%] py-14 sm:py-16 lg:gap-12 lg:py-10">
+      <div className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center gap-10 px-[6%] pt-14 pb-6 sm:pt-16 sm:pb-8 lg:gap-12 lg:pt-10 lg:pb-4">
         <a href="/" className="block ">
           <img
             src={FOOTER_LOGO}
@@ -54,7 +54,7 @@ const Footer = () => {
         </nav>
 
         <div className="w-full max-w-md border-t border-brand/20 pt-8 text-center">
-          <p className="font-['Montserrat'] text-[0.65rem] uppercase tracking-[0.05em] text-brand/100">Hyderabad</p>
+          <p className="font-['Montserrat'] text-[0.65rem] uppercase tracking-[0.05em] text-brand">Hyderabad</p>
           <p className="mt-1 font-['EB_Garamond'] text-sm italic text-foreground/90">Curated Saree Boutique</p>
           <p className="mt-6 font-['Montserrat'] text-[0.65rem] tracking-wide text-foreground/55">
             © {year} Zarivaram. All rights reserved.

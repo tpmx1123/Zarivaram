@@ -23,7 +23,7 @@ const HeritageSection = () => {
     ];
   
     // Watermark logo URL
-    const logoWatermarkUrl = "https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1776155318/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTAxL3Jhd3BpeGVsb2ZmaWNlOF9pc29sYXRlZF92aW50YWdlX2NvbGxhZ2VfYXJ0X29mX2dvbGRfZ2xpdHRlcl9kcl9hNTAwMTgyNi00MTZkLTRlMzktYmE4OS03OWJhYTE4YWY2ZDQtbTV1c2huYzEucG5n-rem_1_2_yuntnc.png";
+    const logoWatermarkUrl = "https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678196/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTAxL3Jhd3BpeGVsb2ZmaWNlOF9pc29sYXRlZF92aW50YWdlX2NvbGxhZ2VfYXJ0X29mX2dvbGRfZ2xpdHRlcl9kcl9hNTAwMTgyNi00MTZkLTRlMzktYmE4OS03OWJhYTE4YWY2ZDQtbTV1c2huYzEucG5n-rem_1_2_apadq5.png";
   
     return (
       <section id="about" className="relative py-20 lg:py-22 overflow-hidden">

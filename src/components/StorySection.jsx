@@ -1,7 +1,7 @@
 import React from 'react';
 
 const StorySection = () => {
-  const storyImage = "https://res.cloudinary.com/di4caiech/image/upload/q_auto/f_auto/v1775800395/Abilasha_Reddy_11_m6bkld.png";
+  const storyImage = "https://res.cloudinary.com/dvnplfu6z/image/upload/v1776678198/Abilasha_Reddy_11_bj6uz4.png";
 
   return (
     <section id="story" className="relative bg-[#fffdf9] py-12 lg:py-24 overflow-hidden">
@@ -14,8 +14,7 @@ const StorySection = () => {
           {/* LEFT CONTENT BLOCK */}
           <div className="flex flex-col w-full">
             {/* 1. Subtitle (Mobile Order 1) */}
-            <div className="mb-5 flex items-center gap-4 order-1">
-              
+            <div className="mb-5 flex items-center gap-4 order-1">              
               <span className="mb-4 block font-['Montserrat'] text-[0.6rem] font-bold uppercase tracking-[0.3em] text-brand/80 sm:mb-6">
                 Founder & Curator
               </span>

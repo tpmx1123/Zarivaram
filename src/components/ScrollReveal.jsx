@@ -37,10 +37,7 @@ const ScrollReveal = ({
   }, [])
 
   useEffect(() => {
-    if (reduceMotion) {
-      setIsVisible(true)
-      return
-    }
+    if (reduceMotion) return
 
     const node = hostRef.current
     if (!node) return
@@ -62,13 +59,14 @@ const ScrollReveal = ({
   }, [once, reduceMotion, threshold])
 
   const offset = OFFSETS[direction] ?? OFFSETS.up
-  const mobileDuration = isMobile ? Math.round(duration * 0.62) : duration
-  const mobileDelay = isMobile ? Math.round(delay * 0.5) : delay
+  const mobileDuration = isMobile ? Math.round(duration * 0.45) : duration
+  const mobileDelay = isMobile ? Math.round(delay * 0.35) : delay
+  const shown = reduceMotion || isVisible
 
   return (
     <div
       ref={hostRef}
-      className={`scroll-reveal ${isVisible ? 'is-visible' : ''} ${className}`.trim()}
+      className={`scroll-reveal ${shown ? 'is-visible' : ''} ${className}`.trim()}
       style={{
         '--reveal-delay': `${mobileDelay}ms`,
         '--reveal-duration': `${mobileDuration}ms`,
